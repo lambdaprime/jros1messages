@@ -20,7 +20,6 @@ package id.jrosmessages.ros1.octomap_msgs;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.PoseMessage;
-import id.jrosmessages.octomap_msgs.OctomapMessage;
 import id.jrosmessages.ros1.std_msgs.HeaderMessage;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;

@@ -19,7 +19,6 @@ package id.jrosmessages.ros1.object_recognition_msgs;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
-import id.jrosmessages.object_recognition_msgs.RecognizedObjectMessage;
 import id.jrosmessages.ros1.std_msgs.HeaderMessage;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;

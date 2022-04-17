@@ -19,7 +19,6 @@ package id.jrosmessages.ros1.visualization_msgs;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
-import id.jrosmessages.visualization_msgs.MarkerMessage;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Arrays;
