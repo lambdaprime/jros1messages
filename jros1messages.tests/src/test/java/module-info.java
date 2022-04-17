@@ -24,5 +24,5 @@ open module jrosmessages.tests {
     requires org.junit.jupiter.params;
     requires org.junit.platform.commons;
 
-    exports id.jrosmessages.ros1.tests;
+    exports id.jros1messages.tests;
 }

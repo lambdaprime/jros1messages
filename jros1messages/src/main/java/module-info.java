@@ -36,11 +36,11 @@ module jros1messages {
     requires id.kineticstreamer;
     requires java.logging;
 
-    exports id.jrosmessages.ros1.std_msgs;
-    exports id.jrosmessages.ros1.geometry_msgs;
-    exports id.jrosmessages.ros1.visualization_msgs;
-    exports id.jrosmessages.ros1.sensor_msgs;
-    exports id.jrosmessages.ros1.trajectory_msgs;
-    exports id.jrosmessages.ros1.object_recognition_msgs;
-    exports id.jrosmessages.ros1.octomap_msgs;
+    exports id.jros1messages.std_msgs;
+    exports id.jros1messages.geometry_msgs;
+    exports id.jros1messages.visualization_msgs;
+    exports id.jros1messages.sensor_msgs;
+    exports id.jros1messages.trajectory_msgs;
+    exports id.jros1messages.object_recognition_msgs;
+    exports id.jros1messages.octomap_msgs;
 }
