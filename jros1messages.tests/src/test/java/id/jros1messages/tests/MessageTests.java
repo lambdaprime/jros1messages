@@ -20,19 +20,18 @@ package id.jros1messages.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import id.jros1messages.geometry_msgs.PolygonStampedMessage;
+import id.jros1messages.impl.RosDataInput;
+import id.jros1messages.impl.RosDataOutput;
 import id.jros1messages.sensor_msgs.JointStateMessage;
 import id.jros1messages.sensor_msgs.PointCloud2Message;
 import id.jros1messages.std_msgs.HeaderMessage;
 import id.jros1messages.visualization_msgs.MarkerMessage;
-import id.jrosmessages.MessageFormat;
 import id.jrosmessages.geometry_msgs.Point32Message;
 import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PolygonMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
 import id.jrosmessages.geometry_msgs.Vector3Message;
-import id.jrosmessages.impl.RosDataInput;
-import id.jrosmessages.impl.RosDataOutput;
 import id.jrosmessages.primitives.Duration;
 import id.jrosmessages.primitives.Time;
 import id.jrosmessages.sensor_msgs.PointFieldMessage;
@@ -56,6 +55,52 @@ public class MessageTests {
 
     static Stream<List> dataProvider() {
         return Stream.of(
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "string-empty"),
+                        new StringMessage()),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "string"),
+                        new StringMessage().withData("hello there")),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "point-empty"),
+                        new PointMessage()),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "point"),
+                        new PointMessage().withX(1.0).withY(1.0).withZ(1.0)),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "point32"),
+                        new Point32Message().withX(1.0F).withY(1.0F).withZ(1.0F)),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "quaternion-empty"),
+                        new QuaternionMessage()),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "quaternion"),
+                        new QuaternionMessage().withX(1.0).withY(1.0).withZ(1.0).withW(3.0)),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "pose-empty"),
+                        new PoseMessage()),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "pose"),
+                        new PoseMessage()
+                                .withPosition(new PointMessage().withX(1.0).withY(1.0).withZ(1.0))
+                                .withQuaternion(
+                                        new QuaternionMessage()
+                                                .withX(1.0)
+                                                .withY(1.0)
+                                                .withZ(1.0)
+                                                .withW(3.0))),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "colorrgba-empty"),
+                        new ColorRGBAMessage()),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "colorrgba"),
+                        new ColorRGBAMessage().withR(.12F).withG(.13F).withB(.14F).withA(.15F)),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "vector3-empty"),
+                        new Vector3Message()),
+                List.of(
+                        resourceUtils.readResource(MessageTests.class, "vector3"),
+                        new Vector3Message().withX(.12).withY(.13).withZ(.14)),
                 List.of(
                         resourceUtils.readResource(MessageTests.class, "polygonstamped"),
                         new PolygonStampedMessage()
@@ -161,8 +206,6 @@ public class MessageTests {
     public void testRead(List testData) throws Exception {
         var collector = new XInputStream((String) testData.get(0));
         var dis = new RosDataInput(new DataInputStream(collector));
-        if (testData.size() == 3)
-            dis = new RosDataInput(new DataInputStream(collector), (MessageFormat) testData.get(2));
         var ks = new KineticStreamReader(dis);
         Object expected = testData.get(1);
         Object actual = ks.read(expected.getClass());
@@ -176,10 +219,6 @@ public class MessageTests {
         var b = testData.get(1);
         var collector = new XOutputStream();
         var dos = new RosDataOutput(new DataOutputStream(collector));
-        if (testData.size() == 3)
-            dos =
-                    new RosDataOutput(
-                            new DataOutputStream(collector), (MessageFormat) testData.get(2));
         var ks = new KineticStreamWriter(dos);
         ks.write(b);
         assertEquals(testData.get(0), collector.asHexString());

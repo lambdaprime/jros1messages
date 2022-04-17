@@ -16,7 +16,7 @@
  * the License.
  */
 /** @author lambdaprime intid@protonmail.com */
-open module jrosmessages.tests {
+open module jros1messages.tests {
     requires org.junit.jupiter.api;
     requires jros1messages;
     requires id.xfunction;

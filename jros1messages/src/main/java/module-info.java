@@ -43,4 +43,6 @@ module jros1messages {
     exports id.jros1messages.trajectory_msgs;
     exports id.jros1messages.object_recognition_msgs;
     exports id.jros1messages.octomap_msgs;
+    exports id.jros1messages.impl to
+            jros1messages.tests;
 }
