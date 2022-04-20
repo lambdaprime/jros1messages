@@ -36,6 +36,7 @@ module jros1messages {
     requires id.kineticstreamer;
     requires java.logging;
 
+    exports id.jros1messages;
     exports id.jros1messages.std_msgs;
     exports id.jros1messages.geometry_msgs;
     exports id.jros1messages.visualization_msgs;
