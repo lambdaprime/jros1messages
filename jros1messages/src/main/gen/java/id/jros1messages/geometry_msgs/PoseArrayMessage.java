@@ -21,20 +21,19 @@ import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.PoseMessage;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Arrays;
 import java.util.Objects;
 
 /** Definition for geometry_msgs/PoseArray An array of poses with a header for global reference. */
-@MessageMetadata(type = PoseArrayMessage.NAME, md5sum = "5f3f794301c7af61b3beab5b9997bb64")
+@MessageMetadata(name = PoseArrayMessage.NAME, md5sum = "5f3f794301c7af61b3beab5b9997bb64")
 public class PoseArrayMessage implements Message {
 
     static final String NAME = "geometry_msgs/PoseArray";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
-    @Streamed public PoseMessage[] poses = new PoseMessage[0];
+    public PoseMessage[] poses = new PoseMessage[0];
 
     public PoseArrayMessage withHeader(HeaderMessage header) {
         this.header = header;

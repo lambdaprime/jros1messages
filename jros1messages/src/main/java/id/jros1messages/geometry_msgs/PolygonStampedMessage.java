@@ -21,19 +21,18 @@ import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.PolygonMessage;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Objects;
 
 /** Definition for geometry_msgs/PolygonStamped */
-@MessageMetadata(type = PolygonStampedMessage.NAME, md5sum = "c6be8f7dc3bee7fe9e8d296070f53340")
+@MessageMetadata(name = PolygonStampedMessage.NAME, md5sum = "c6be8f7dc3bee7fe9e8d296070f53340")
 public class PolygonStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/PolygonStamped";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
-    @Streamed public PolygonMessage polygon = new PolygonMessage();
+    public PolygonMessage polygon = new PolygonMessage();
 
     public PolygonStampedMessage withPolygon(PolygonMessage polygon) {
         this.polygon = polygon;

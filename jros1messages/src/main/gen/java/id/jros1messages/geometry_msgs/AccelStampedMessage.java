@@ -21,21 +21,20 @@ import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.AccelMessage;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Objects;
 
 /**
  * Definition for geometry_msgs/AccelStamped An accel with reference coordinate frame and timestamp
  */
-@MessageMetadata(type = AccelStampedMessage.NAME, md5sum = "b50c8c69ae37bb74d3cffd798577ca70")
+@MessageMetadata(name = AccelStampedMessage.NAME, md5sum = "b50c8c69ae37bb74d3cffd798577ca70")
 public class AccelStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/AccelStamped";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
-    @Streamed public AccelMessage accel = new AccelMessage();
+    public AccelMessage accel = new AccelMessage();
 
     public AccelStampedMessage withHeader(HeaderMessage header) {
         this.header = header;

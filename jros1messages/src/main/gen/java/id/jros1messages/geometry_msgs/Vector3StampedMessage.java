@@ -21,7 +21,6 @@ import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.Vector3Message;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Objects;
 
@@ -29,14 +28,14 @@ import java.util.Objects;
  * Definition for geometry_msgs/Vector3Stamped This represents a Vector3 with reference coordinate
  * frame and timestamp
  */
-@MessageMetadata(type = Vector3StampedMessage.NAME, md5sum = "25a0f208694a205ef85c426c089ebf78")
+@MessageMetadata(name = Vector3StampedMessage.NAME, md5sum = "25a0f208694a205ef85c426c089ebf78")
 public class Vector3StampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/Vector3Stamped";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
-    @Streamed public Vector3Message vector = new Vector3Message();
+    public Vector3Message vector = new Vector3Message();
 
     public Vector3StampedMessage withHeader(HeaderMessage header) {
         this.header = header;

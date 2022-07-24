@@ -22,7 +22,6 @@ import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Arrays;
 import java.util.Objects;
@@ -31,25 +30,25 @@ import java.util.Objects;
  * Definition for object_recognition_msgs/Table Informs that a planar table has been detected at a
  * given location
  */
-@MessageMetadata(type = TableMessage.NAME, md5sum = "304994c1900801400e8500e36e22a08c")
+@MessageMetadata(name = TableMessage.NAME, md5sum = "304994c1900801400e8500e36e22a08c")
 public class TableMessage implements Message {
 
     static final String NAME = "object_recognition_msgs/Table";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
     /**
      * The pose gives you the transform that take you to the coordinate system of the table, with
      * the origin somewhere in the table plane and the z axis normal to the plane
      */
-    @Streamed public PoseMessage pose = new PoseMessage();
+    public PoseMessage pose = new PoseMessage();
 
     /**
      * There is no guarantee that the table does NOT extend further than the convex hull; this is
      * just as far as we've observed it. The origin of the table coordinate system is inside the
      * convex hull Set of points forming the convex hull of the table
      */
-    @Streamed public PointMessage[] convex_hull = new PointMessage[0];
+    public PointMessage[] convex_hull = new PointMessage[0];
 
     public TableMessage withHeader(HeaderMessage header) {
         this.header = header;

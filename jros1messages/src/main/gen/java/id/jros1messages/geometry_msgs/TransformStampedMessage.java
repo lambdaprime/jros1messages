@@ -22,7 +22,6 @@ import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.TransformMessage;
 import id.jrosmessages.std_msgs.StringMessage;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Objects;
 
@@ -31,17 +30,17 @@ import java.util.Objects;
  * header.frame_id # to the coordinate frame child_frame_id # # This message is mostly used by the #
  * <a href="http://wiki.ros.org/tf">tf</a> package. # See its documentation for more information.
  */
-@MessageMetadata(type = TransformStampedMessage.NAME, md5sum = "c788bacd82271109656949f89891ee39")
+@MessageMetadata(name = TransformStampedMessage.NAME, md5sum = "c788bacd82271109656949f89891ee39")
 public class TransformStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/TransformStamped";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
     /** the frame id of the child frame */
-    @Streamed public StringMessage child_frame_id = new StringMessage();
+    public StringMessage child_frame_id = new StringMessage();
 
-    @Streamed public TransformMessage transform = new TransformMessage();
+    public TransformMessage transform = new TransformMessage();
 
     public TransformStampedMessage withHeader(HeaderMessage header) {
         this.header = header;

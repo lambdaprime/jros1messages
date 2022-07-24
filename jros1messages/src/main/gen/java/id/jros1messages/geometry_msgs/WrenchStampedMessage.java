@@ -21,21 +21,20 @@ import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.WrenchMessage;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Objects;
 
 /**
  * Definition for geometry_msgs/WrenchStamped A wrench with reference coordinate frame and timestamp
  */
-@MessageMetadata(type = WrenchStampedMessage.NAME, md5sum = "150502b356390fb151385ef7647f633e")
+@MessageMetadata(name = WrenchStampedMessage.NAME, md5sum = "150502b356390fb151385ef7647f633e")
 public class WrenchStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/WrenchStamped";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
-    @Streamed public WrenchMessage wrench = new WrenchMessage();
+    public WrenchMessage wrench = new WrenchMessage();
 
     public WrenchStampedMessage withHeader(HeaderMessage header) {
         this.header = header;

@@ -20,14 +20,13 @@ package id.jros1messages.object_recognition_msgs;
 import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Arrays;
 import java.util.Objects;
 
 /** Definition for object_recognition_msgs/RecognizedObjectArray */
 @MessageMetadata(
-        type = RecognizedObjectArrayMessage.NAME,
+        name = RecognizedObjectArrayMessage.NAME,
         md5sum = "5746f6dbdd0d9dca075766fb7c6dd65c")
 public class RecognizedObjectArrayMessage implements Message {
 
@@ -37,20 +36,20 @@ public class RecognizedObjectArrayMessage implements Message {
      * #################################################### HEADER
      * ###########################################################
      */
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
     /**
      * This message type describes a potential scene configuration: a set of objects that can
      * explain the scene
      */
-    @Streamed public RecognizedObjectMessage[] objects = new RecognizedObjectMessage[0];
+    public RecognizedObjectMessage[] objects = new RecognizedObjectMessage[0];
 
     /**
      * #################################################### SEARCH
      * ########################################################### The co-occurrence matrix between
      * the recognized objects
      */
-    @Streamed public float[] cooccurrence = new float[0];
+    public float[] cooccurrence = new float[0];
 
     public RecognizedObjectArrayMessage withHeader(HeaderMessage header) {
         this.header = header;

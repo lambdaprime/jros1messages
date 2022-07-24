@@ -19,17 +19,16 @@ package id.jros1messages.visualization_msgs;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Arrays;
 
 /** Definition for visualization_msgs/MarkerArray */
-@MessageMetadata(type = MarkerArrayMessage.NAME, md5sum = "d155b9ce5188fbaf89745847fd5882d7")
+@MessageMetadata(name = MarkerArrayMessage.NAME, md5sum = "d155b9ce5188fbaf89745847fd5882d7")
 public class MarkerArrayMessage implements Message {
 
     static final String NAME = "visualization_msgs/MarkerArray";
 
-    @Streamed public MarkerMessage[] markers = new MarkerMessage[0];
+    public MarkerMessage[] markers = new MarkerMessage[0];
 
     public MarkerArrayMessage withMarkers(MarkerMessage... markers) {
         this.markers = markers;

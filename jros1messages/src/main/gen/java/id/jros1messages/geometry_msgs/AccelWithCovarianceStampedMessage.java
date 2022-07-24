@@ -21,7 +21,6 @@ import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.AccelWithCovarianceMessage;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Objects;
 
@@ -30,15 +29,15 @@ import java.util.Objects;
  * reference coordinate frame and timestamp.
  */
 @MessageMetadata(
-        type = AccelWithCovarianceStampedMessage.NAME,
+        name = AccelWithCovarianceStampedMessage.NAME,
         md5sum = "cf7b852cab243d76000e69f42f2700f6")
 public class AccelWithCovarianceStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/AccelWithCovarianceStamped";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
-    @Streamed public AccelWithCovarianceMessage accel = new AccelWithCovarianceMessage();
+    public AccelWithCovarianceMessage accel = new AccelWithCovarianceMessage();
 
     public AccelWithCovarianceStampedMessage withHeader(HeaderMessage header) {
         this.header = header;

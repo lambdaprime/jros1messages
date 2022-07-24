@@ -21,19 +21,18 @@ import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.PoseMessage;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Objects;
 
 /** Definition for geometry_msgs/PoseStamped A Pose with reference coordinate frame and timestamp */
-@MessageMetadata(type = PoseStampedMessage.NAME, md5sum = "43f3760283d49766c9fdd69c4461f732")
+@MessageMetadata(name = PoseStampedMessage.NAME, md5sum = "43f3760283d49766c9fdd69c4461f732")
 public class PoseStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/PoseStamped";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
-    @Streamed public PoseMessage pose = new PoseMessage();
+    public PoseMessage pose = new PoseMessage();
 
     public PoseStampedMessage withHeader(HeaderMessage header) {
         this.header = header;

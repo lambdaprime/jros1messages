@@ -21,19 +21,18 @@ import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.InertiaMessage;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Objects;
 
 /** Definition for geometry_msgs/InertiaStamped */
-@MessageMetadata(type = InertiaStampedMessage.NAME, md5sum = "f316819d435fac009022ead4726153cc")
+@MessageMetadata(name = InertiaStampedMessage.NAME, md5sum = "f316819d435fac009022ead4726153cc")
 public class InertiaStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/InertiaStamped";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
-    @Streamed public InertiaMessage inertia = new InertiaMessage();
+    public InertiaMessage inertia = new InertiaMessage();
 
     public InertiaStampedMessage withHeader(HeaderMessage header) {
         this.header = header;

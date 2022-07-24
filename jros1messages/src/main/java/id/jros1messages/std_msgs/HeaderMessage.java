@@ -20,19 +20,18 @@ package id.jros1messages.std_msgs;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.primitives.Time;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Objects;
 
 /** Definition for std_msgs/Header */
-@MessageMetadata(type = "std_msgs/Header", md5sum = "2176decaecbce78abc3b96ef049fabed")
+@MessageMetadata(name = "std_msgs/Header", md5sum = "2176decaecbce78abc3b96ef049fabed")
 public class HeaderMessage implements Message {
 
-    @Streamed public int seq;
+    public int seq;
 
-    @Streamed public Time stamp = new Time();
+    public Time stamp = new Time();
 
-    @Streamed public String frame_id = "";
+    public String frame_id = "";
 
     public HeaderMessage withSeq(int seq) {
         this.seq = seq;

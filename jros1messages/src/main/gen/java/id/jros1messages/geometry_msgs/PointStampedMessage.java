@@ -21,7 +21,6 @@ import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.PointMessage;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Objects;
 
@@ -29,14 +28,14 @@ import java.util.Objects;
  * Definition for geometry_msgs/PointStamped This represents a Point with reference coordinate frame
  * and timestamp
  */
-@MessageMetadata(type = PointStampedMessage.NAME, md5sum = "e948b3cf3f45aaeaedb063e8b966cf1f")
+@MessageMetadata(name = PointStampedMessage.NAME, md5sum = "e948b3cf3f45aaeaedb063e8b966cf1f")
 public class PointStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/PointStamped";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
-    @Streamed public PointMessage point = new PointMessage();
+    public PointMessage point = new PointMessage();
 
     public PointStampedMessage withHeader(HeaderMessage header) {
         this.header = header;

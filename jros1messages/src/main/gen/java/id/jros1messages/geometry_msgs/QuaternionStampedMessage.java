@@ -21,7 +21,6 @@ import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
-import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 import java.util.Objects;
 
@@ -29,14 +28,14 @@ import java.util.Objects;
  * Definition for geometry_msgs/QuaternionStamped This represents an orientation with reference
  * coordinate frame and timestamp.
  */
-@MessageMetadata(type = QuaternionStampedMessage.NAME, md5sum = "4a5c00199247da86fc3d583bf5af5ca6")
+@MessageMetadata(name = QuaternionStampedMessage.NAME, md5sum = "4a5c00199247da86fc3d583bf5af5ca6")
 public class QuaternionStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/QuaternionStamped";
 
-    @Streamed public HeaderMessage header = new HeaderMessage();
+    public HeaderMessage header = new HeaderMessage();
 
-    @Streamed public QuaternionMessage quaternion = new QuaternionMessage();
+    public QuaternionMessage quaternion = new QuaternionMessage();
 
     public QuaternionStampedMessage withHeader(HeaderMessage header) {
         this.header = header;

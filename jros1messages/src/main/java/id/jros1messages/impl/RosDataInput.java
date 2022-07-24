@@ -82,7 +82,7 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public Object[] readArray(Class<?> type) throws Exception {
+    public Object[] readArray(Object[] arg0, Class<?> type) throws Exception {
         LOGGER.entering("readArray");
         var array = (Object[]) Array.newInstance(type, readLen());
         for (int i = 0; i < array.length; i++) {
@@ -106,7 +106,7 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public byte[] readByteArray() throws Exception {
+    public byte[] readByteArray(byte[] arg0) throws Exception {
         LOGGER.entering("readByteArray");
         var array = new byte[readLen()];
         for (int i = 0; i < array.length; i++) {
@@ -117,12 +117,12 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public int[] readIntArray() throws Exception {
-        throw new RuntimeException("Not supported");
+    public int[] readIntArray(int[] arg0) throws Exception {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public double[] readDoubleArray() throws Exception {
+    public double[] readDoubleArray(double[] arg0) throws Exception {
         LOGGER.entering("readDoubleArray");
         var array = new double[readLen()];
         for (int i = 0; i < array.length; i++) {
@@ -133,13 +133,44 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public boolean[] readBooleanArray() throws Exception {
+    public boolean[] readBooleanArray(boolean[] arg0) throws Exception {
         LOGGER.entering("readBooleanArray");
         var array = new boolean[readLen()];
         for (int i = 0; i < array.length; i++) {
             array[i] = readBool();
         }
         LOGGER.exiting("readBooleanArray");
+        return array;
+    }
+
+    @Override
+    public long readLong() throws Exception {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public long[] readLongArray(long[] arg0) throws Exception {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public short readShort() throws Exception {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public short[] readShortArray(short[] arg0) throws Exception {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String[] readStringArray(String[] arg0) throws Exception {
+        LOGGER.entering("readStringArray");
+        var array = new String[readLen()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = readString();
+        }
+        LOGGER.exiting("readStringArray");
         return array;
     }
 }
