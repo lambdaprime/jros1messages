@@ -13,12 +13,14 @@ plugins {
 }
 
 dependencies {
+    def jrosmessages = 'io.github.lambdaprime:jrosmessages:2.0-SNAPSHOT'
+
     implementation 'io.github.lambdaprime:kineticstreamer:4.0'
-    implementation 'io.github.lambdaprime:jrosmessages:1.0'
+    implementation "${jrosmessages}"
 
     // transitively export following dependency to tests project
     apiElements 'io.github.lambdaprime:kineticstreamer:4.0'
-    apiElements 'io.github.lambdaprime:jrosmessages:1.0'
+    apiElements "${jrosmessages}"
 }
 
 jar {
