@@ -22,6 +22,7 @@ import id.jros1messages.impl.RosDataOutput;
 import id.jrosmessages.Message;
 import id.kineticstreamer.KineticStreamReader;
 import id.kineticstreamer.KineticStreamWriter;
+import id.xfunction.Preconditions;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -38,6 +39,8 @@ public class MessageSerializationUtils {
      * @param clazz message class
      */
     public <M extends Message> M read(byte[] data, Class<M> clazz) {
+        Preconditions.isTrue(
+                data.length != 0, "Could not read the message as there is no data to read");
         try {
             var dis = new DataInputStream(new ByteArrayInputStream(data));
             var ks = new KineticStreamReader(new RosDataInput(dis));

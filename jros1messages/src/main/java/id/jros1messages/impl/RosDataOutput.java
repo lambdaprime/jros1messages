@@ -109,8 +109,8 @@ public class RosDataOutput implements OutputKineticStream {
     }
 
     @Override
-    public void writeLong(Long arg0) throws Exception {
-        throw new UnsupportedOperationException();
+    public void writeLong(Long i) throws Exception {
+        out.writeLong(Long.reverseBytes(i));
     }
 
     @Override

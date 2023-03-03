@@ -145,7 +145,7 @@ public class RosDataInput implements InputKineticStream {
 
     @Override
     public long readLong() throws Exception {
-        throw new UnsupportedOperationException();
+        return Long.reverseBytes(in.readLong());
     }
 
     @Override
