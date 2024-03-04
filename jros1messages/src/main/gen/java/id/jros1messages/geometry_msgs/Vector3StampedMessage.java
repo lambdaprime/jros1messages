@@ -28,7 +28,10 @@ import java.util.Objects;
  * Definition for geometry_msgs/Vector3Stamped This represents a Vector3 with reference coordinate
  * frame and timestamp
  */
-@MessageMetadata(name = Vector3StampedMessage.NAME, md5sum = "25a0f208694a205ef85c426c089ebf78")
+@MessageMetadata(
+        name = Vector3StampedMessage.NAME,
+        fields = {"header", "vector"},
+        md5sum = "7b324c7325e683bf02a9b14b01090ec7")
 public class Vector3StampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/Vector3Stamped";

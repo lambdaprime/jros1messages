@@ -30,7 +30,8 @@ import java.util.Objects;
  */
 @MessageMetadata(
         name = AccelWithCovarianceStampedMessage.NAME,
-        md5sum = "cf7b852cab243d76000e69f42f2700f6")
+        fields = {"header", "accel"},
+        md5sum = "96adb295225031ec8d57fb4251b0a886")
 public class AccelWithCovarianceStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/AccelWithCovarianceStamped";

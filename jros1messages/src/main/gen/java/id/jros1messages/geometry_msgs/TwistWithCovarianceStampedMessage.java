@@ -30,7 +30,8 @@ import java.util.Objects;
  */
 @MessageMetadata(
         name = TwistWithCovarianceStampedMessage.NAME,
-        md5sum = "f59b87b044187f26ef66329003c3d275")
+        fields = {"header", "twist"},
+        md5sum = "8927a1a12fb2607ceea095b2dc440a96")
 public class TwistWithCovarianceStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/TwistWithCovarianceStamped";

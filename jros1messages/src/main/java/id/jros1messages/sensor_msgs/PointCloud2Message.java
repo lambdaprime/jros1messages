@@ -26,7 +26,20 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /** Definition for sensor_msgs/PointCloud2 */
-@MessageMetadata(name = PointCloud2Message.NAME, md5sum = "1158d486dd51d683ce2f1be655c3c181")
+@MessageMetadata(
+        name = PointCloud2Message.NAME,
+        fields = {
+            "header",
+            "height",
+            "width",
+            "fields",
+            "is_bigendian",
+            "point_step",
+            "row_step",
+            "data",
+            "is_dense"
+        },
+        md5sum = "1158d486dd51d683ce2f1be655c3c181")
 public class PointCloud2Message implements Message {
 
     static final String NAME = "sensor_msgs/PointCloud2";

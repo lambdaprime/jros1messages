@@ -30,7 +30,8 @@ import java.util.Objects;
  */
 @MessageMetadata(
         name = PoseWithCovarianceStampedMessage.NAME,
-        md5sum = "729039794eaab042b403222dbf81e197")
+        fields = {"header", "pose"},
+        md5sum = "953b798c0f514ff060a53a3498ce6246")
 public class PoseWithCovarianceStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/PoseWithCovarianceStamped";

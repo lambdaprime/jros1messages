@@ -20,16 +20,24 @@ package id.jros1messages;
 import id.jros1messages.impl.RosDataInput;
 import id.jros1messages.impl.RosDataOutput;
 import id.jrosmessages.Message;
+import id.jrosmessages.MessageMetadataAccessor;
+import id.kineticstreamer.KineticStreamController;
 import id.kineticstreamer.KineticStreamReader;
 import id.kineticstreamer.KineticStreamWriter;
+import id.kineticstreamer.PublicStreamedFieldsProvider;
+import id.kineticstreamer.StreamedFieldsProvider;
 import id.xfunction.Preconditions;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-/** Performs message (de)serialization (from)to stream of bytes. */
+/** Performs message (de)serialization (from)to stream of bytes. Must be thread-safe. */
 public class MessageSerializationUtils {
+    private static final MessageMetadataAccessor METADATA_ACCESSOR = new MessageMetadataAccessor();
+    private static final StreamedFieldsProvider FIELDS_PROVIDER =
+            new PublicStreamedFieldsProvider(
+                    clazz -> METADATA_ACCESSOR.getFields((Class<Message>) clazz));
 
     /**
      * Deserialize message from byte stream
@@ -43,7 +51,11 @@ public class MessageSerializationUtils {
                 data.length != 0, "Could not read the message as there is no data to read");
         try {
             var dis = new DataInputStream(new ByteArrayInputStream(data));
-            var ks = new KineticStreamReader(new RosDataInput(dis));
+            var ks =
+                    new KineticStreamReader(new RosDataInput(dis))
+                            .withController(
+                                    new KineticStreamController()
+                                            .withFieldsProvider(FIELDS_PROVIDER));
             Object obj = ks.read(clazz);
             return (M) obj;
         } catch (Exception e) {
@@ -60,7 +72,10 @@ public class MessageSerializationUtils {
         try {
             var bos = new ByteArrayOutputStream();
             var dos = new DataOutputStream(bos);
-            var ks = new KineticStreamWriter(new RosDataOutput(dos));
+            var controller = new KineticStreamController().withFieldsProvider(FIELDS_PROVIDER);
+            var ks =
+                    new KineticStreamWriter(new RosDataOutput(dos, controller))
+                            .withController(controller);
             ks.write(message);
             return bos.toByteArray();
         } catch (Exception e) {

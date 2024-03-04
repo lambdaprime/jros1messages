@@ -24,10 +24,15 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Definition for shape_msgs/SolidPrimitive Define box, sphere, cylinder, cone All shapes are
- * defined to have their bounding boxes centered around 0,0,0.
+ * Definition for shape_msgs/SolidPrimitive
+ *
+ * <p>Define box, sphere, cylinder, cone All shapes are defined to have their bounding boxes
+ * centered around 0,0,0.
  */
-@MessageMetadata(name = SolidPrimitiveMessage.NAME, md5sum = "9121085a5b5bb159b33cd1739087e356")
+@MessageMetadata(
+        name = SolidPrimitiveMessage.NAME,
+        fields = {"BOX", "SPHERE", "CYLINDER", "CONE", "type", "dimensions"},
+        md5sum = "d8f8cbc74c5ff283fca29569ccefb45d")
 public class SolidPrimitiveMessage implements Message {
 
     static final String NAME = "shape_msgs/SolidPrimitive";

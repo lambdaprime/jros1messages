@@ -29,7 +29,8 @@ import java.util.Objects;
 /** Definition for trajectory_msgs/MultiDOFJointTrajectory */
 @MessageMetadata(
         name = MultiDOFJointTrajectoryMessage.NAME,
-        md5sum = "e19d4216caa321543b869ca5b1f5e224")
+        fields = {"header", "joint_names", "points"},
+        md5sum = "ef145a45a5f47b77b7f5cdde4b16c942")
 public class MultiDOFJointTrajectoryMessage implements Message {
 
     static final String NAME = "trajectory_msgs/MultiDOFJointTrajectory";

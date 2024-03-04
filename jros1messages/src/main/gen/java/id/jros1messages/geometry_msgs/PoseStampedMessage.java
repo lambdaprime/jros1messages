@@ -25,7 +25,10 @@ import id.xfunction.XJson;
 import java.util.Objects;
 
 /** Definition for geometry_msgs/PoseStamped A Pose with reference coordinate frame and timestamp */
-@MessageMetadata(name = PoseStampedMessage.NAME, md5sum = "43f3760283d49766c9fdd69c4461f732")
+@MessageMetadata(
+        name = PoseStampedMessage.NAME,
+        fields = {"header", "pose"},
+        md5sum = "d3812c3cbc69362b77dc0b19b345f8f5")
 public class PoseStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/PoseStamped";

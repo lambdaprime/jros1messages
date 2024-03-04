@@ -27,7 +27,10 @@ import java.util.Objects;
 /**
  * Definition for geometry_msgs/AccelStamped An accel with reference coordinate frame and timestamp
  */
-@MessageMetadata(name = AccelStampedMessage.NAME, md5sum = "b50c8c69ae37bb74d3cffd798577ca70")
+@MessageMetadata(
+        name = AccelStampedMessage.NAME,
+        fields = {"header", "accel"},
+        md5sum = "d8a98a5d81351b6eb0578c78557e7659")
 public class AccelStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/AccelStamped";

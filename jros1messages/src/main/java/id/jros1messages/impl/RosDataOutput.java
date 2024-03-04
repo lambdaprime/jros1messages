@@ -17,17 +17,21 @@
  */
 package id.jros1messages.impl;
 
+import id.kineticstreamer.KineticStreamController;
 import id.kineticstreamer.KineticStreamWriter;
 import id.kineticstreamer.OutputKineticStream;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 
 public class RosDataOutput implements OutputKineticStream {
 
     private DataOutput out;
+    private KineticStreamController controller;
 
-    public RosDataOutput(DataOutput out) {
+    public RosDataOutput(DataOutput out, KineticStreamController controller) {
         this.out = out;
+        this.controller = controller;
     }
 
     public void writeLen(int len) throws IOException {
@@ -35,37 +39,38 @@ public class RosDataOutput implements OutputKineticStream {
     }
 
     @Override
-    public void writeString(String str) throws IOException {
+    public void writeString(String str, Annotation[] fieldAnnotations) throws IOException {
         var len = str.length();
         writeLen(len);
         out.write(str.getBytes());
     }
 
     @Override
-    public void writeInt(Integer i) throws IOException {
+    public void writeInt(Integer i, Annotation[] fieldAnnotations) throws IOException {
         out.writeInt(Integer.reverseBytes(i));
     }
 
     @Override
-    public void writeDouble(Double f) throws IOException {
+    public void writeDouble(Double f, Annotation[] fieldAnnotations) throws IOException {
         out.writeDouble(Double.longBitsToDouble(Long.reverseBytes(Double.doubleToRawLongBits(f))));
     }
 
     @Override
-    public void writeFloat(Float f) throws IOException {
+    public void writeFloat(Float f, Annotation[] fieldAnnotations) throws IOException {
         out.writeFloat(Float.intBitsToFloat(Integer.reverseBytes(Float.floatToRawIntBits(f))));
     }
 
     @Override
-    public void writeBoolean(Boolean b) throws IOException {
+    public void writeBoolean(Boolean b, Annotation[] fieldAnnotations) throws IOException {
         out.writeBoolean(b);
     }
 
     @Override
-    public void writeArray(Object[] array) throws Exception {
+    public void writeArray(Object[] array, Annotation[] fieldAnnotations) throws Exception {
         writeLen(array.length);
+        var writer = new KineticStreamWriter(this).withController(controller);
         for (var item : array) {
-            new KineticStreamWriter(this).write(item);
+            writer.write(item);
         }
     }
 
@@ -75,17 +80,17 @@ public class RosDataOutput implements OutputKineticStream {
     }
 
     @Override
-    public void writeByte(Byte b) throws Exception {
+    public void writeByte(Byte b, Annotation[] fieldAnnotations) throws Exception {
         out.writeByte(b);
     }
 
     @Override
-    public void writeIntArray(int[] array) throws Exception {
+    public void writeIntArray(int[] array, Annotation[] fieldAnnotations) throws Exception {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeByteArray(byte[] array) throws Exception {
+    public void writeByteArray(byte[] array, Annotation[] fieldAnnotations) throws Exception {
         writeLen(array.length);
         for (var item : array) {
             out.writeByte(item);
@@ -93,41 +98,56 @@ public class RosDataOutput implements OutputKineticStream {
     }
 
     @Override
-    public void writeDoubleArray(double[] array) throws Exception {
+    public void writeDoubleArray(double[] array, Annotation[] fieldAnnotations) throws Exception {
         writeLen(array.length);
         for (var item : array) {
-            writeDouble(item);
+            writeDouble(item, fieldAnnotations);
         }
     }
 
     @Override
-    public void writeBooleanArray(boolean[] array) throws Exception {
+    public void writeBooleanArray(boolean[] array, Annotation[] fieldAnnotations) throws Exception {
         writeLen(array.length);
         for (var item : array) {
-            writeBoolean(item);
+            writeBoolean(item, fieldAnnotations);
         }
     }
 
     @Override
-    public void writeLong(Long i) throws Exception {
+    public void writeLong(Long i, Annotation[] fieldAnnotations) throws Exception {
         out.writeLong(Long.reverseBytes(i));
     }
 
     @Override
-    public void writeShort(Short arg0) throws Exception {
+    public void writeShort(Short arg0, Annotation[] fieldAnnotations) throws Exception {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeShortArray(short[] arg0) throws Exception {
+    public void writeShortArray(short[] arg0, Annotation[] fieldAnnotations) throws Exception {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeStringArray(String[] array) throws Exception {
+    public void writeStringArray(String[] array, Annotation[] fieldAnnotations) throws Exception {
         writeLen(array.length);
         for (var item : array) {
-            writeString(item);
+            writeString(item, fieldAnnotations);
         }
+    }
+
+    @Override
+    public void writeChar(Character arg0, Annotation[] arg1) throws Exception {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeCharArray(char[] arg0, Annotation[] arg1) throws Exception {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeFloatArray(float[] arg0, Annotation[] arg1) throws Exception {
+        throw new UnsupportedOperationException();
     }
 }

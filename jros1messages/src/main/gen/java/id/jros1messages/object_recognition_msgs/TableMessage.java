@@ -27,10 +27,14 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Definition for object_recognition_msgs/Table Informs that a planar table has been detected at a
- * given location
+ * Definition for object_recognition_msgs/Table
+ *
+ * <p>Informs that a planar table has been detected at a given location
  */
-@MessageMetadata(name = TableMessage.NAME, md5sum = "304994c1900801400e8500e36e22a08c")
+@MessageMetadata(
+        name = TableMessage.NAME,
+        fields = {"header", "pose", "convex_hull"},
+        md5sum = "39efebc7d51e44bd2d72f2df6c7823a2")
 public class TableMessage implements Message {
 
     static final String NAME = "object_recognition_msgs/Table";

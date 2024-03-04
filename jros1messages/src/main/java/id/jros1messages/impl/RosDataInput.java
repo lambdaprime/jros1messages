@@ -22,6 +22,7 @@ import id.kineticstreamer.KineticStreamReader;
 import id.xfunction.logging.XLogger;
 import java.io.DataInput;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 
 public class RosDataInput implements InputKineticStream {
@@ -35,12 +36,12 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public int readInt() throws IOException {
+    public int readInt(Annotation[] fieldAnnotations) throws IOException {
         return Integer.reverseBytes(in.readInt());
     }
 
     @Override
-    public String readString() throws IOException {
+    public String readString(Annotation[] fieldAnnotations) throws IOException {
         LOGGER.entering("readString");
         int len = readLen();
         byte[] b = new byte[len];
@@ -55,7 +56,7 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public double readDouble() throws IOException {
+    public double readDouble(Annotation[] fieldAnnotations) throws IOException {
         LOGGER.entering("readDouble");
         var value =
                 Double.longBitsToDouble(
@@ -65,7 +66,7 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public float readFloat() throws IOException {
+    public float readFloat(Annotation[] fieldAnnotations) throws IOException {
         LOGGER.entering("readFloat");
         var value =
                 Float.intBitsToFloat(Integer.reverseBytes(Float.floatToRawIntBits(in.readFloat())));
@@ -74,7 +75,7 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public boolean readBool() throws IOException {
+    public boolean readBool(Annotation[] fieldAnnotations) throws IOException {
         LOGGER.entering("readBool");
         var value = in.readBoolean();
         LOGGER.exiting("readBool", value);
@@ -82,7 +83,8 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public Object[] readArray(Object[] arg0, Class<?> type) throws Exception {
+    public Object[] readArray(Object[] arg0, Class<?> type, Annotation[] fieldAnnotations)
+            throws Exception {
         LOGGER.entering("readArray");
         var array = (Object[]) Array.newInstance(type, readLen());
         for (int i = 0; i < array.length; i++) {
@@ -98,7 +100,7 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public byte readByte() throws Exception {
+    public byte readByte(Annotation[] fieldAnnotations) throws Exception {
         LOGGER.entering("readByte");
         var value = in.readByte();
         LOGGER.exiting("readByte");
@@ -106,7 +108,7 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public byte[] readByteArray(byte[] arg0) throws Exception {
+    public byte[] readByteArray(byte[] arg0, Annotation[] fieldAnnotations) throws Exception {
         LOGGER.entering("readByteArray");
         var array = new byte[readLen()];
         for (int i = 0; i < array.length; i++) {
@@ -117,60 +119,76 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public int[] readIntArray(int[] arg0) throws Exception {
+    public int[] readIntArray(int[] arg0, Annotation[] fieldAnnotations) throws Exception {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public double[] readDoubleArray(double[] arg0) throws Exception {
+    public double[] readDoubleArray(double[] arg0, Annotation[] fieldAnnotations) throws Exception {
         LOGGER.entering("readDoubleArray");
         var array = new double[readLen()];
         for (int i = 0; i < array.length; i++) {
-            array[i] = readDouble();
+            array[i] = readDouble(fieldAnnotations);
         }
         LOGGER.exiting("readDoubleArray");
         return array;
     }
 
     @Override
-    public boolean[] readBooleanArray(boolean[] arg0) throws Exception {
+    public boolean[] readBooleanArray(boolean[] arg0, Annotation[] fieldAnnotations)
+            throws Exception {
         LOGGER.entering("readBooleanArray");
         var array = new boolean[readLen()];
         for (int i = 0; i < array.length; i++) {
-            array[i] = readBool();
+            array[i] = readBool(fieldAnnotations);
         }
         LOGGER.exiting("readBooleanArray");
         return array;
     }
 
     @Override
-    public long readLong() throws Exception {
+    public long readLong(Annotation[] fieldAnnotations) throws Exception {
         return Long.reverseBytes(in.readLong());
     }
 
     @Override
-    public long[] readLongArray(long[] arg0) throws Exception {
+    public long[] readLongArray(long[] arg0, Annotation[] fieldAnnotations) throws Exception {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public short readShort() throws Exception {
+    public short readShort(Annotation[] fieldAnnotations) throws Exception {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public short[] readShortArray(short[] arg0) throws Exception {
+    public short[] readShortArray(short[] arg0, Annotation[] fieldAnnotations) throws Exception {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public String[] readStringArray(String[] arg0) throws Exception {
+    public String[] readStringArray(String[] arg0, Annotation[] fieldAnnotations) throws Exception {
         LOGGER.entering("readStringArray");
         var array = new String[readLen()];
         for (int i = 0; i < array.length; i++) {
-            array[i] = readString();
+            array[i] = readString(fieldAnnotations);
         }
         LOGGER.exiting("readStringArray");
         return array;
+    }
+
+    @Override
+    public char readChar(Annotation[] arg0) throws Exception {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public char[] readCharArray(char[] arg0, Annotation[] arg1) throws Exception {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public float[] readFloatArray(float[] array, Annotation[] fieldAnnotations) throws Exception {
+        throw new UnsupportedOperationException();
     }
 }
