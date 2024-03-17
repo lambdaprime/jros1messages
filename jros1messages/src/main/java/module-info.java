@@ -37,14 +37,15 @@ module jros1messages {
     requires java.logging;
 
     exports id.jros1messages;
-    exports id.jros1messages.std_msgs;
     exports id.jros1messages.geometry_msgs;
-    exports id.jros1messages.visualization_msgs;
-    exports id.jros1messages.sensor_msgs;
-    exports id.jros1messages.shape_msgs;
-    exports id.jros1messages.trajectory_msgs;
     exports id.jros1messages.object_recognition_msgs;
     exports id.jros1messages.octomap_msgs;
+    exports id.jros1messages.sensor_msgs;
+    exports id.jros1messages.shape_msgs;
+    exports id.jros1messages.std_msgs;
+    exports id.jros1messages.trajectory_msgs;
+    exports id.jros1messages.vision_msgs;
+    exports id.jros1messages.visualization_msgs;
     exports id.jros1messages.impl to
             jros1messages.tests;
 }

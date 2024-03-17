@@ -17,15 +17,19 @@
  */
 package id.jros1messages.impl;
 
+import static id.kineticstreamer.KineticStreamConstants.EMPTY_ANNOTATIONS;
+
 import id.kineticstreamer.KineticStreamController;
 import id.kineticstreamer.KineticStreamWriter;
 import id.kineticstreamer.OutputKineticStream;
+import id.xfunction.logging.XLogger;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.nio.ByteBuffer;
 
 public class RosDataOutput implements OutputKineticStream {
-
+    private static final XLogger LOGGER = XLogger.getLogger(RosDataOutput.class);
     private DataOutput out;
     private KineticStreamController controller;
 
@@ -35,7 +39,18 @@ public class RosDataOutput implements OutputKineticStream {
     }
 
     public void writeLen(int len) throws IOException {
-        out.writeInt(Integer.reverseBytes(len));
+        writeInt(len, EMPTY_ANNOTATIONS);
+    }
+
+    private void writeArraySize(int len, Annotation[] fieldAnnotations) throws IOException {
+        LOGGER.entering("writeArraySize");
+        for (int i = 0; i < fieldAnnotations.length; i++) {
+            if (fieldAnnotations[i] instanceof id.jrosmessages.Array a) {
+                if (a.size() > 0) return;
+            }
+        }
+        writeLen(len);
+        LOGGER.exiting("writeArraySize");
     }
 
     @Override
@@ -62,12 +77,12 @@ public class RosDataOutput implements OutputKineticStream {
 
     @Override
     public void writeBoolean(Boolean b, Annotation[] fieldAnnotations) throws IOException {
-        out.writeBoolean(b);
+        writeByte(b ? (byte) 1 : (byte) 0, fieldAnnotations);
     }
 
     @Override
     public void writeArray(Object[] array, Annotation[] fieldAnnotations) throws Exception {
-        writeLen(array.length);
+        writeArraySize(array.length, fieldAnnotations);
         var writer = new KineticStreamWriter(this).withController(controller);
         for (var item : array) {
             writer.write(item);
@@ -80,37 +95,50 @@ public class RosDataOutput implements OutputKineticStream {
     }
 
     @Override
-    public void writeByte(Byte b, Annotation[] fieldAnnotations) throws Exception {
+    public void writeByte(Byte b, Annotation[] fieldAnnotations) throws IOException {
         out.writeByte(b);
     }
 
     @Override
     public void writeIntArray(int[] array, Annotation[] fieldAnnotations) throws Exception {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void writeByteArray(byte[] array, Annotation[] fieldAnnotations) throws Exception {
-        writeLen(array.length);
-        for (var item : array) {
-            out.writeByte(item);
+        writeArraySize(array.length, fieldAnnotations);
+        if (array.length > 0) {
+            var buf = new byte[array.length * Integer.BYTES];
+            ByteBuffer.wrap(buf)
+                    .order(JRosMessagesConstants.ROS_BYTE_ORDER)
+                    .asIntBuffer()
+                    .put(array);
+            out.write(buf);
         }
     }
 
     @Override
+    public void writeByteArray(byte[] array, Annotation[] fieldAnnotations) throws Exception {
+        writeArraySize(array.length, fieldAnnotations);
+        out.write(array);
+    }
+
+    @Override
     public void writeDoubleArray(double[] array, Annotation[] fieldAnnotations) throws Exception {
-        writeLen(array.length);
-        for (var item : array) {
-            writeDouble(item, fieldAnnotations);
+        writeArraySize(array.length, fieldAnnotations);
+        if (array.length > 0) {
+            var buf = new byte[array.length * Double.BYTES];
+            ByteBuffer.wrap(buf)
+                    .order(JRosMessagesConstants.ROS_BYTE_ORDER)
+                    .asDoubleBuffer()
+                    .put(array);
+            out.write(buf);
         }
     }
 
     @Override
     public void writeBooleanArray(boolean[] array, Annotation[] fieldAnnotations) throws Exception {
-        writeLen(array.length);
-        for (var item : array) {
-            writeBoolean(item, fieldAnnotations);
+        writeArraySize(array.length, fieldAnnotations);
+        var buf = new byte[array.length];
+        for (int i = 0; i < buf.length; i++) {
+            buf[i] = array[i] ? (byte) 1 : (byte) 0;
         }
+        writeByteArray(buf, EMPTY_ANNOTATIONS);
     }
 
     @Override
@@ -130,9 +158,9 @@ public class RosDataOutput implements OutputKineticStream {
 
     @Override
     public void writeStringArray(String[] array, Annotation[] fieldAnnotations) throws Exception {
-        writeLen(array.length);
+        writeArraySize(array.length, fieldAnnotations);
         for (var item : array) {
-            writeString(item, fieldAnnotations);
+            writeString(item, EMPTY_ANNOTATIONS);
         }
     }
 
@@ -147,7 +175,15 @@ public class RosDataOutput implements OutputKineticStream {
     }
 
     @Override
-    public void writeFloatArray(float[] arg0, Annotation[] arg1) throws Exception {
-        throw new UnsupportedOperationException();
+    public void writeFloatArray(float[] array, Annotation[] arg1) throws Exception {
+        writeLen(array.length);
+        if (array.length > 0) {
+            var buf = new byte[array.length * Float.BYTES];
+            ByteBuffer.wrap(buf)
+                    .order(JRosMessagesConstants.ROS_BYTE_ORDER)
+                    .asFloatBuffer()
+                    .put(array);
+            out.write(buf);
+        }
     }
 }

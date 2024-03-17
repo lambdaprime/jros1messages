@@ -17,27 +17,29 @@
  */
 package id.jros1messages.impl;
 
+import static id.kineticstreamer.KineticStreamConstants.EMPTY_ANNOTATIONS;
+
 import id.kineticstreamer.InputKineticStream;
 import id.kineticstreamer.KineticStreamReader;
 import id.xfunction.logging.XLogger;
-import java.io.DataInput;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
+import java.nio.ByteBuffer;
 
 public class RosDataInput implements InputKineticStream {
 
     private static final XLogger LOGGER = XLogger.getLogger(RosDataInput.class);
 
-    private DataInput in;
+    private ByteBuffer in;
 
-    public RosDataInput(DataInput in) {
-        this.in = in;
+    public RosDataInput(ByteBuffer buf) {
+        this.in = buf.order(JRosMessagesConstants.ROS_BYTE_ORDER);
     }
 
     @Override
     public int readInt(Annotation[] fieldAnnotations) throws IOException {
-        return Integer.reverseBytes(in.readInt());
+        return in.getInt();
     }
 
     @Override
@@ -45,22 +47,20 @@ public class RosDataInput implements InputKineticStream {
         LOGGER.entering("readString");
         int len = readLen();
         byte[] b = new byte[len];
-        in.readFully(b);
+        in.get(b);
         var value = new String(b, 0, len);
         LOGGER.exiting("readString", value);
         return value;
     }
 
     public int readLen() throws IOException {
-        return Integer.reverseBytes(in.readInt());
+        return readInt(EMPTY_ANNOTATIONS);
     }
 
     @Override
     public double readDouble(Annotation[] fieldAnnotations) throws IOException {
         LOGGER.entering("readDouble");
-        var value =
-                Double.longBitsToDouble(
-                        Long.reverseBytes(Double.doubleToRawLongBits(in.readDouble())));
+        var value = in.getDouble();
         LOGGER.exiting("readDouble", value);
         return value;
     }
@@ -68,8 +68,7 @@ public class RosDataInput implements InputKineticStream {
     @Override
     public float readFloat(Annotation[] fieldAnnotations) throws IOException {
         LOGGER.entering("readFloat");
-        var value =
-                Float.intBitsToFloat(Integer.reverseBytes(Float.floatToRawIntBits(in.readFloat())));
+        var value = in.getFloat();
         LOGGER.exiting("readFloat", value);
         return value;
     }
@@ -77,18 +76,19 @@ public class RosDataInput implements InputKineticStream {
     @Override
     public boolean readBool(Annotation[] fieldAnnotations) throws IOException {
         LOGGER.entering("readBool");
-        var value = in.readBoolean();
+        var value = readByte(EMPTY_ANNOTATIONS);
         LOGGER.exiting("readBool", value);
-        return value;
+        return value == 1;
     }
 
     @Override
-    public Object[] readArray(Object[] arg0, Class<?> type, Annotation[] fieldAnnotations)
+    public Object[] readArray(Object[] a, Class<?> type, Annotation[] fieldAnnotations)
             throws Exception {
         LOGGER.entering("readArray");
-        var array = (Object[]) Array.newInstance(type, readLen());
+        var array = (Object[]) Array.newInstance(type, readArraySize(fieldAnnotations));
+        var reader = new KineticStreamReader(this);
         for (int i = 0; i < array.length; i++) {
-            array[i] = new KineticStreamReader(this).read(type);
+            array[i] = reader.read(type);
         }
         LOGGER.exiting("readArray");
         return array;
@@ -100,20 +100,18 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public byte readByte(Annotation[] fieldAnnotations) throws Exception {
+    public byte readByte(Annotation[] fieldAnnotations) throws IOException {
         LOGGER.entering("readByte");
-        var value = in.readByte();
+        var value = in.get();
         LOGGER.exiting("readByte");
         return value;
     }
 
     @Override
-    public byte[] readByteArray(byte[] arg0, Annotation[] fieldAnnotations) throws Exception {
+    public byte[] readByteArray(byte[] array, Annotation[] fieldAnnotations) throws Exception {
         LOGGER.entering("readByteArray");
-        var array = new byte[readLen()];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = in.readByte();
-        }
+        array = new byte[readArraySize(fieldAnnotations)];
+        in.get(array);
         LOGGER.exiting("readByteArray");
         return array;
     }
@@ -124,23 +122,41 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public double[] readDoubleArray(double[] arg0, Annotation[] fieldAnnotations) throws Exception {
+    public double[] readDoubleArray(double[] array, Annotation[] fieldAnnotations)
+            throws Exception {
         LOGGER.entering("readDoubleArray");
-        var array = new double[readLen()];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = readDouble(fieldAnnotations);
+        array = new double[readArraySize(fieldAnnotations)];
+        if (array.length > 0) {
+            var tmpBuf = in.asDoubleBuffer();
+            tmpBuf.get(array);
+            in.position(in.position() + array.length * Double.BYTES);
         }
         LOGGER.exiting("readDoubleArray");
         return array;
     }
 
+    private int readArraySize(Annotation[] fieldAnnotations) throws IOException {
+        LOGGER.entering("readArraySize");
+        var s = 0;
+        for (int i = 0; i < fieldAnnotations.length; i++) {
+            if (fieldAnnotations[i] instanceof id.jrosmessages.Array a) {
+                s = a.size();
+                break;
+            }
+        }
+        if (s == 0) s = readLen();
+        LOGGER.exiting("readArraySize", s);
+        return s;
+    }
+
     @Override
-    public boolean[] readBooleanArray(boolean[] arg0, Annotation[] fieldAnnotations)
+    public boolean[] readBooleanArray(boolean[] array, Annotation[] fieldAnnotations)
             throws Exception {
         LOGGER.entering("readBooleanArray");
-        var array = new boolean[readLen()];
+        var b = readByteArray(null, EMPTY_ANNOTATIONS);
+        array = new boolean[b.length];
         for (int i = 0; i < array.length; i++) {
-            array[i] = readBool(fieldAnnotations);
+            array[i] = b[i] == 1;
         }
         LOGGER.exiting("readBooleanArray");
         return array;
@@ -148,7 +164,7 @@ public class RosDataInput implements InputKineticStream {
 
     @Override
     public long readLong(Annotation[] fieldAnnotations) throws Exception {
-        return Long.reverseBytes(in.readLong());
+        return in.getLong();
     }
 
     @Override
@@ -167,11 +183,12 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public String[] readStringArray(String[] arg0, Annotation[] fieldAnnotations) throws Exception {
+    public String[] readStringArray(String[] array, Annotation[] fieldAnnotations)
+            throws Exception {
         LOGGER.entering("readStringArray");
-        var array = new String[readLen()];
+        array = new String[readArraySize(fieldAnnotations)];
         for (int i = 0; i < array.length; i++) {
-            array[i] = readString(fieldAnnotations);
+            array[i] = readString(EMPTY_ANNOTATIONS);
         }
         LOGGER.exiting("readStringArray");
         return array;
@@ -189,6 +206,14 @@ public class RosDataInput implements InputKineticStream {
 
     @Override
     public float[] readFloatArray(float[] array, Annotation[] fieldAnnotations) throws Exception {
-        throw new UnsupportedOperationException();
+        LOGGER.entering("readFloatArray");
+        array = new float[readArraySize(fieldAnnotations)];
+        if (array.length > 0) {
+            var tmpBuf = in.asFloatBuffer();
+            tmpBuf.get(array);
+            in.position(in.position() + array.length * Float.BYTES);
+        }
+        LOGGER.exiting("readFloatArray");
+        return array;
     }
 }

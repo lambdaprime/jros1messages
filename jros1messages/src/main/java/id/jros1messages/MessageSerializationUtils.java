@@ -27,10 +27,9 @@ import id.kineticstreamer.KineticStreamWriter;
 import id.kineticstreamer.PublicStreamedFieldsProvider;
 import id.kineticstreamer.StreamedFieldsProvider;
 import id.xfunction.Preconditions;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.nio.ByteBuffer;
 
 /** Performs message (de)serialization (from)to stream of bytes. Must be thread-safe. */
 public class MessageSerializationUtils {
@@ -50,16 +49,16 @@ public class MessageSerializationUtils {
         Preconditions.isTrue(
                 data.length != 0, "Could not read the message as there is no data to read");
         try {
-            var dis = new DataInputStream(new ByteArrayInputStream(data));
+            var buf = ByteBuffer.wrap(data);
             var ks =
-                    new KineticStreamReader(new RosDataInput(dis))
+                    new KineticStreamReader(new RosDataInput(buf))
                             .withController(
                                     new KineticStreamController()
                                             .withFieldsProvider(FIELDS_PROVIDER));
             Object obj = ks.read(clazz);
             return (M) obj;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Problem reading " + clazz.getName(), e);
         }
     }
 
@@ -79,7 +78,7 @@ public class MessageSerializationUtils {
             ks.write(message);
             return bos.toByteArray();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Problem writing " + message.getClass().getName(), e);
         }
     }
 }
