@@ -17,68 +17,33 @@
  */
 package id.jros1messages;
 
-import id.jros1messages.impl.RosDataInput;
-import id.jros1messages.impl.RosDataOutput;
-import id.jrosmessages.Message;
-import id.jrosmessages.MessageMetadataAccessor;
+import id.jros1messages.impl.Ros1DataInput;
+import id.jros1messages.impl.Ros1DataOutput;
+import id.jrosmessages.impl.AbstractMessageSerializationUtils;
 import id.kineticstreamer.KineticStreamController;
 import id.kineticstreamer.KineticStreamReader;
 import id.kineticstreamer.KineticStreamWriter;
-import id.kineticstreamer.PublicStreamedFieldsProvider;
-import id.kineticstreamer.StreamedFieldsProvider;
-import id.xfunction.Preconditions;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.nio.ByteBuffer;
+import java.util.Map;
 
 /** Performs message (de)serialization (from)to stream of bytes. Must be thread-safe. */
-public class MessageSerializationUtils {
-    private static final MessageMetadataAccessor METADATA_ACCESSOR = new MessageMetadataAccessor();
-    private static final StreamedFieldsProvider FIELDS_PROVIDER =
-            new PublicStreamedFieldsProvider(
-                    clazz -> METADATA_ACCESSOR.getFields((Class<Message>) clazz));
+public class MessageSerializationUtils extends AbstractMessageSerializationUtils {
 
-    /**
-     * Deserialize message from byte stream
-     *
-     * @param <M> type of the message
-     * @param data byte array with the message
-     * @param clazz message class
-     */
-    public <M extends Message> M read(byte[] data, Class<M> clazz) {
-        Preconditions.isTrue(
-                data.length != 0, "Could not read the message as there is no data to read");
-        try {
-            var buf = ByteBuffer.wrap(data);
-            var ks =
-                    new KineticStreamReader(new RosDataInput(buf))
-                            .withController(
-                                    new KineticStreamController()
-                                            .withFieldsProvider(FIELDS_PROVIDER));
-            Object obj = ks.read(clazz);
-            return (M) obj;
-        } catch (Exception e) {
-            throw new RuntimeException("Problem reading " + clazz.getName(), e);
-        }
+    public MessageSerializationUtils() {
+        super(Map.of("RosVersion", "ROS1"));
     }
 
-    /**
-     * Serialize message to byte stream
-     *
-     * @param message message to serialize
-     */
-    public byte[] write(Message message) {
-        try {
-            var bos = new ByteArrayOutputStream();
-            var dos = new DataOutputStream(bos);
-            var controller = new KineticStreamController().withFieldsProvider(FIELDS_PROVIDER);
-            var ks =
-                    new KineticStreamWriter(new RosDataOutput(dos, controller))
-                            .withController(controller);
-            ks.write(message);
-            return bos.toByteArray();
-        } catch (Exception e) {
-            throw new RuntimeException("Problem writing " + message.getClass().getName(), e);
-        }
+    @Override
+    protected KineticStreamReader newKineticStreamReader(ByteBuffer buf) {
+        return new KineticStreamReader(new Ros1DataInput(buf))
+                .withController(new KineticStreamController().withFieldsProvider(FIELDS_PROVIDER));
+    }
+
+    @Override
+    protected KineticStreamWriter newKineticStreamWriter(DataOutputStream dos) {
+        var controller = new KineticStreamController().withFieldsProvider(FIELDS_PROVIDER);
+        return new KineticStreamWriter(new Ros1DataOutput(dos, controller))
+                .withController(controller);
     }
 }
