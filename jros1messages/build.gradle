@@ -14,6 +14,10 @@ plugins {
   id 'java-library'
 }
 
+boolean isReleaseBuild() {
+  return version != null && version.matches("\\d+[.\\d+]*");
+}
+
 apply plugin : 'eclipse'
 
 eclipse.classpath.file {
@@ -24,7 +28,7 @@ eclipse.classpath.file {
 }
 
 dependencies {
-  api "io.github.lambdaprime:jrosmessages:7.0-SNAPSHOT"
+  api "io.github.lambdaprime:jrosmessages:7.0"
 }
 
 configurations {
@@ -53,6 +57,8 @@ javadoc {
   options.noNavBar = true
   // ignore missing @return, @param etc
   options.addBooleanOption('Xdoclint:all,-missing', true)
+  // should point to location of element-list files
+  options.addStringOption('link', 'http://portal2.atwebpages.com/jrosclient/javadoc/jrosmessages/')
 }
 
 def packageDir = "$buildDir/package/${projectName}"
@@ -88,9 +94,8 @@ clean.dependsOn cleanRelease
 classes.dependsOn spotlessApply
 
 task updateVersion() {
-  // update version only when it is specified and non SNAPSHOT version is built
-  // 'unspecified' is the default value for the version in Gradle if it is not set
-  if (!version || version == "unspecified" || version.contains("SNAPSHOT")) return;
+  // update version only during release build
+  if (!isReleaseBuild()) return;
   println "Updating version to " + version
   new id.xfunction.text.Substitutor()
     .withRegexpSupport()

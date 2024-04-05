@@ -6,7 +6,7 @@ Java 17+
 
 # Download
 
-[Release versions](https://github.com/lambdaprime/jros1messages/releases)
+[Release versions](jros1messages/release/CHANGELOG.md)
 
 Or you can add dependency to it as follows:
 
@@ -14,7 +14,7 @@ Gradle:
 
 ```
 dependencies {
-    implementation 'io.github.lambdaprime:jros1messages:2.0'
+  implementation 'io.github.lambdaprime:jros1messages:3.0'
 }
 ```
 
