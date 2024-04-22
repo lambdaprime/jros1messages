@@ -25,6 +25,7 @@ open module jros1messages.tests {
     requires id.kineticstreamer;
     requires org.junit.jupiter.params;
     requires org.junit.platform.commons;
+    requires jrosmessages.tests;
 
     exports id.jros1messages.tests;
 }
