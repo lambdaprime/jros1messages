@@ -26,6 +26,7 @@ import id.jros1messages.sensor_msgs.JointStateMessage;
 import id.jros1messages.sensor_msgs.PointCloud2Message;
 import id.jros1messages.std_msgs.HeaderMessage;
 import id.jros1messages.vision_msgs.ObjectHypothesisWithPoseMessage;
+import id.jros1messages.visualization_msgs.MarkerArrayMessage;
 import id.jros1messages.visualization_msgs.MarkerMessage;
 import id.jrosmessages.Message;
 import id.jrosmessages.geometry_msgs.Point32Message;
@@ -54,27 +55,27 @@ public class MessageTests {
 
     static Stream<List> dataProvider() {
         return Stream.of(
-                // 1
                 List.of(readResource("string-empty"), new StringMessage()),
-                // 2
+                /*
+                rostopic pub testTopic std_msgs/String "hello there"
+                 */
                 List.of(readResource("string"), new StringMessage().withData("hello there")),
-                // 3
                 List.of(readResource("point-empty"), new PointMessage()),
-                // 4
+                /*
+                rostopic pub testTopic geometry_msgs/Point "{x: 1.0, y: 1.0, z: 1.0}"
+                 */
                 List.of(readResource("point"), new PointMessage().withX(1.0).withY(1.0).withZ(1.0)),
-                // 5
                 List.of(
                         readResource("point32"),
                         new Point32Message().withX(1.0F).withY(1.0F).withZ(1.0F)),
-                // 6
                 List.of(readResource("quaternion-empty"), new QuaternionMessage()),
-                // 7
                 List.of(
                         readResource("quaternion"),
                         new QuaternionMessage().withX(1.0).withY(1.0).withZ(1.0).withW(3.0)),
-                // 8
                 List.of(readResource("pose-empty"), new PoseMessage()),
-                // 9
+                /*
+                rostopic pub testTopic geometry_msgs/Pose "{position: {x: 1.0, y: 1.0, z: 1.0}, orientation: {x: 1.0, y: 1.0, z: 1.0, w: 3.0}}"
+                 */
                 List.of(
                         readResource("pose"),
                         new PoseMessage()
@@ -85,19 +86,20 @@ public class MessageTests {
                                                 .withY(1.0)
                                                 .withZ(1.0)
                                                 .withW(3.0))),
-                // 10
                 List.of(readResource("colorrgba-empty"), new ColorRGBAMessage()),
-                // 11
+                /*
+                rostopic pub testTopic std_msgs/ColorRGBA '{r: 0.12, g: 0.13, b: 0.14, a: 0.15}'
+                 */
                 List.of(
                         readResource("colorrgba"),
                         new ColorRGBAMessage().withR(.12F).withG(.13F).withB(.14F).withA(.15F)),
-                // 12
                 List.of(readResource("vector3-empty"), new Vector3Message()),
-                // 13
+                /*
+                rostopic pub testTopic geometry_msgs/Vector3 '{x: 0.12, y: 0.13, z: 0.14}'
+                 */
                 List.of(
                         readResource("vector3"),
                         new Vector3Message().withX(.12).withY(.13).withZ(.14)),
-                // 14
                 List.of(
                         readResource("polygonstamped"),
                         new PolygonStampedMessage()
@@ -114,49 +116,59 @@ public class MessageTests {
                                                             new Point32Message(1F, 2F, 3F),
                                                             new Point32Message(0F, 0F, 0F)
                                                         }))),
-                // 15
                 List.of(readResource("header-empty"), new HeaderMessage()),
-                // 16
+                /*
+                rostopic pub testTopic std_msgs/Header '{seq: 123, stamp: 1111, frame_id: "aaaa"}'
+                 */
                 List.of(
                         readResource("header"),
                         new HeaderMessage()
                                 .withSeq(123)
                                 .withStamp(new Time(0, 1111))
                                 .withFrameId("aaaa")),
-                // 17
                 List.of(readResource("marker-empty"), new MarkerMessage()),
-                // 18
+                /*
+                rostopic pub testTopic visualization_msgs/Marker "{header: {seq: 123, stamp: 1111, frame_id: "aaaa"}, ns: "test", id: 123, type: 1, action: 0, pose: {position: {x: 1.0, y: 1.0, z: 1.0}, orientation: {x: 1.0, y: 1.0, z: 1.0, w: 3.0}}, scale: {x: 0.12, y: 0.13, z: 0.14}, color: {r: 0.12, g: 0.13, b: 0.14, a: 0.15}, lifetime: 1111, frame_locked: true}"
+                 */
                 List.of(
-                        readResource("marker"),
-                        new MarkerMessage()
-                                .withHeader(new HeaderMessage().withSeq(0).withFrameId("/map"))
-                                .withNs(new StringMessage().withData("test"))
-                                .withType(MarkerMessage.Type.CUBE)
-                                .withAction(MarkerMessage.Action.ADD)
-                                .withPose(
-                                        new PoseMessage()
-                                                .withPosition(
-                                                        new PointMessage()
-                                                                .withX(1.0)
-                                                                .withY(1.0)
-                                                                .withZ(1.0))
-                                                .withQuaternion(
-                                                        new QuaternionMessage()
-                                                                .withX(1.0)
-                                                                .withY(1.0)
-                                                                .withZ(1.0)
-                                                                .withW(3.0)))
-                                .withScale(new Vector3Message().withX(1.0).withY(0.1).withZ(0.1))
-                                .withColor(
-                                        new ColorRGBAMessage()
-                                                .withR(1.0F)
-                                                .withG(0.13F)
-                                                .withB(0.14F)
-                                                .withA(1.0F))
-                                .withText(new StringMessage().withData("aa"))
-                                .withLifetime(new Duration())
-                                .withFrameLocked(false)),
-                // 19
+                        readResource("marker-array"),
+                        new MarkerArrayMessage()
+                                .withMarkers(
+                                        new MarkerMessage()
+                                                .withHeader(new HeaderMessage().withFrameId("/map"))
+                                                .withNs(
+                                                        new StringMessage()
+                                                                .withData("basic_shapes"))
+                                                .withType(MarkerMessage.Type.CUBE)
+                                                .withAction(MarkerMessage.Action.ADD)
+                                                .withPose(
+                                                        new PoseMessage()
+                                                                .withPosition(
+                                                                        new PointMessage()
+                                                                                .withX(1.0)
+                                                                                .withY(0.0)
+                                                                                .withZ(2.0))
+                                                                .withQuaternion(
+                                                                        new QuaternionMessage()
+                                                                                .withX(0.0)
+                                                                                .withY(0.0)
+                                                                                .withZ(0.0)
+                                                                                .withW(1.0)))
+                                                .withScale(
+                                                        new Vector3Message()
+                                                                .withX(0.05)
+                                                                .withY(0.05)
+                                                                .withZ(0.05))
+                                                .withColor(
+                                                        new ColorRGBAMessage()
+                                                                .withR(0.8F)
+                                                                .withG(0.1F)
+                                                                .withB(0.1F)
+                                                                .withA(1.0F))
+                                                .withText(new StringMessage().withData("aa"))
+                                                .withLifetime(new Duration())
+                                                .withFrameLocked(true)
+                                                .withMeshUseEmbeddedMaterials(true))),
                 List.of(
                         readResource("pointcloud2"),
                         new PointCloud2Message()
@@ -187,7 +199,6 @@ public class MessageTests {
                                 .withData("a".repeat(96).getBytes())
                                 .withRowStep(96)
                                 .withWidth(8)),
-                // 20
                 List.of(
                         readResource("joint-state"),
                         new JointStateMessage()
@@ -198,7 +209,6 @@ public class MessageTests {
                                 .withNames("joint_0", "joint_1", "joint_2", "joint_3", "joint_4")
                                 .withPositions(
                                         new double[] {0.0, 0.0, 0.0, 0.767944870877505, 0.0})),
-                // 23
                 List.of(
                         readResource("obj_hypothesis"),
                         new ObjectHypothesisWithPoseMessage()

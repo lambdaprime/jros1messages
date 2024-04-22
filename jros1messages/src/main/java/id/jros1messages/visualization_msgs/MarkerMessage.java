@@ -186,6 +186,11 @@ public class MarkerMessage implements Message {
         return this;
     }
 
+    public MarkerMessage withMeshUseEmbeddedMaterials(boolean mesh_use_embedded_materials) {
+        this.mesh_use_embedded_materials = mesh_use_embedded_materials;
+        return this;
+    }
+
     @Override
     public String toString() {
         return XJson.asString(

@@ -23,21 +23,25 @@ import id.jrosmessages.impl.AbstractMessageSerializationUtils;
 import id.kineticstreamer.KineticStreamController;
 import id.kineticstreamer.KineticStreamReader;
 import id.kineticstreamer.KineticStreamWriter;
+import id.xfunction.logging.TracingToken;
 import java.io.DataOutputStream;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
 /** Performs message (de)serialization (from)to stream of bytes. Must be thread-safe. */
 public class Ros1MessageSerializationUtils extends AbstractMessageSerializationUtils {
+    private static final TracingToken TRACING_TOKEN =
+            new TracingToken(Ros1MessageSerializationUtils.class.getSimpleName());
 
     public Ros1MessageSerializationUtils() {
-        super(Map.of("RosVersion", "ROS1"));
+        super(TRACING_TOKEN, Map.of("RosVersion", "ROS1"));
     }
 
     @Override
     protected KineticStreamReader newKineticStreamReader(ByteBuffer buf) {
-        return new KineticStreamReader(new Ros1DataInput(buf))
-                .withController(new KineticStreamController().withFieldsProvider(FIELDS_PROVIDER));
+        var controller = new KineticStreamController().withFieldsProvider(FIELDS_PROVIDER);
+        return new KineticStreamReader(new Ros1DataInput(buf, controller))
+                .withController(controller);
     }
 
     @Override

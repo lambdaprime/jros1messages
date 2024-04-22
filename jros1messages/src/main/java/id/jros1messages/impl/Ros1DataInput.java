@@ -18,6 +18,7 @@
 package id.jros1messages.impl;
 
 import id.jrosmessages.impl.RosDataInput;
+import id.kineticstreamer.KineticStreamController;
 import id.xfunction.logging.TracingToken;
 import java.nio.ByteBuffer;
 
@@ -26,7 +27,7 @@ public class Ros1DataInput extends RosDataInput {
     private static final TracingToken TRACING_TOKEN =
             new TracingToken(Ros1DataInput.class.getSimpleName());
 
-    public Ros1DataInput(ByteBuffer buf) {
-        super(TRACING_TOKEN, buf);
+    public Ros1DataInput(ByteBuffer buf, KineticStreamController controller) {
+        super(TRACING_TOKEN, buf, controller);
     }
 }
