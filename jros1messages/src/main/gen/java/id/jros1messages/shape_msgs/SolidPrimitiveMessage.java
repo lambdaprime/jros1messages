@@ -31,7 +31,7 @@ import java.util.Objects;
  */
 @MessageMetadata(
         name = SolidPrimitiveMessage.NAME,
-        fields = {"BOX", "SPHERE", "CYLINDER", "CONE", "type", "dimensions"},
+        fields = {"type", "dimensions"},
         md5sum = "d8f8cbc74c5ff283fca29569ccefb45d")
 public class SolidPrimitiveMessage implements Message {
 

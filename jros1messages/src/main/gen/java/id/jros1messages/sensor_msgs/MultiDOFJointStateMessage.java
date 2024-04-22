@@ -42,7 +42,10 @@ import java.util.Objects;
  * size, or be empty. # This is the only way to uniquely associate the joint name with the correct #
  * states.
  */
-@MessageMetadata(name = MultiDOFJointStateMessage.NAME, md5sum = "ca6307bcc53f56ce3e190e089129c7f6")
+@MessageMetadata(
+        name = MultiDOFJointStateMessage.NAME,
+        fields = {"header", "joint_names", "transforms", "twist", "wrench"},
+        md5sum = "690f272f0640d2631c305eeb8301e59d")
 public class MultiDOFJointStateMessage implements Message {
 
     static final String NAME = "sensor_msgs/MultiDOFJointState";
