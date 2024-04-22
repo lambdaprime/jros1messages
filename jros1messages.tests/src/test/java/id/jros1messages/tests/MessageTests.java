@@ -20,7 +20,7 @@ package id.jros1messages.tests;
 import static java.util.stream.Collectors.joining;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import id.jros1messages.MessageSerializationUtils;
+import id.jros1messages.Ros1MessageSerializationUtils;
 import id.jros1messages.geometry_msgs.PolygonStampedMessage;
 import id.jros1messages.sensor_msgs.JointStateMessage;
 import id.jros1messages.sensor_msgs.PointCloud2Message;
@@ -50,7 +50,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class MessageTests {
     private static final ResourceUtils resourceUtils = new ResourceUtils();
-    private MessageSerializationUtils serializationUtils = new MessageSerializationUtils();
+    private Ros1MessageSerializationUtils serializationUtils = new Ros1MessageSerializationUtils();
 
     static Stream<List> dataProvider() {
         return Stream.of(

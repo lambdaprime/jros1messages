@@ -28,9 +28,9 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 
 /** Performs message (de)serialization (from)to stream of bytes. Must be thread-safe. */
-public class MessageSerializationUtils extends AbstractMessageSerializationUtils {
+public class Ros1MessageSerializationUtils extends AbstractMessageSerializationUtils {
 
-    public MessageSerializationUtils() {
+    public Ros1MessageSerializationUtils() {
         super(Map.of("RosVersion", "ROS1"));
     }
 
