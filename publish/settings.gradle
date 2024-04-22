@@ -1,4 +1,3 @@
 // list of subprojects to publish to Sonatype repo
 
-include 'jros1messages'
-project(':jros1messages').projectDir = new File(rootDir, '../jros1messages')
+include "${zzName}"

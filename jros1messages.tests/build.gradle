@@ -11,8 +11,8 @@ eclipse.classpath.file {
 }
 
 dependencies {
-  testImplementation project(':jros1messages')
-  testImplementation 'io.github.lambdaprime:id.xfunction:20.0'
+  testImplementation project(":${zzName}")
+  zzTestDependencies.split(',').findAll{ !it.isBlank() }.each { testImplementation it }
 
   def junitVersion = "5.8.1"
   testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
@@ -22,7 +22,7 @@ dependencies {
 }
 
 jacoco {
-  // Java 21 support
+  // Java 17 support
   toolVersion = "0.8.10"
 }
 
@@ -42,13 +42,13 @@ jacocoTestReport {
     csv.required = false
     html.required = true
   }
-  sourceDirectories.from = project(':jros1messages').sourceSets.main.java.srcDirs
-  classDirectories.from = project(':jros1messages').sourceSets.main.java.classesDirectory
+  sourceDirectories.from = project(":${zzName}").sourceSets.main.java.srcDirs
+  classDirectories.from = project(":${zzName}").sourceSets.main.java.classesDirectory
 }
 
 jacocoTestCoverageVerification {
-  sourceDirectories.from = project(':jros1messages').sourceSets.main.java.srcDirs
-  classDirectories.from = project(':jros1messages').sourceSets.main.java.classesDirectory
+  sourceDirectories.from = project(":${zzName}").sourceSets.main.java.srcDirs
+  classDirectories.from = project(":${zzName}").sourceSets.main.java.classesDirectory
   violationRules {
     rule {
     enabled = true
@@ -56,7 +56,7 @@ jacocoTestCoverageVerification {
       limit {
         counter = 'LINE'
         value = 'COVEREDRATIO'
-        minimum = 0.2
+        minimum = Double.parseDouble(zzMinTestCoverage)
       }
     }
   }

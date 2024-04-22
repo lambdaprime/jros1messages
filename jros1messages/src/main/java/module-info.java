@@ -35,7 +35,6 @@ module jros1messages {
     requires transitive jrosmessages;
     requires id.xfunction;
     requires id.kineticstreamer;
-    requires java.logging;
 
     exports id.jros1messages;
     exports id.jros1messages.geometry_msgs;
