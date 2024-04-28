@@ -270,17 +270,48 @@ public class JRos1MessageTests extends MessageTests {
                                         new WrenchMessage()
                                                 .withForce(new Vector3Message(18, 19, 110))
                                                 .withTorque(new Vector3Message(111, 112, 113)))),
+                /*
+                 *
+                 rostopic pub -r 10 helloRos "trajectory_msgs/JointTrajectory" '
+                 header:
+                   stamp: [0, 123]
+                   frame_id: "aaa"
+                 joint_names: ["joint1", "joint2"]
+                 points:
+                   - positions: [1,2,3]
+                     velocities: [4,5,6,7]
+                     accelerations: [8,9,10]
+                     effort: [11,12,13,14]
+                     time_from_start: [333, 0]
+                   - positions: [11,12,13]
+                     velocities: [14,15,16,17]
+                     accelerations: [18,19,10]
+                     effort: [1,2,3,4]
+                     time_from_start: [0, 54]
+                 '
+                *
+                */
                 new TestCase(
                         "JointTrajectory",
                         new JointTrajectoryMessage()
-                                .withHeader(new HeaderMessage().withSeq(12).withFrameId("aaa"))
+                                .withHeader(
+                                        new HeaderMessage()
+                                                .withStamp(new Time(0, 123))
+                                                .withFrameId("aaa"))
                                 .withJointNames(
                                         new StringMessage("joint1"), new StringMessage("joint2"))
                                 .withPoints(
                                         new JointTrajectoryPointMessage()
-                                                .withPositions(0x11, 0x12, 0x13, 0x14)
-                                                .withVelocities(0x11, 0x12, 0x13, 0x14)
-                                                .withAccelerations(0x11, 0x12, 0x13, 0x14)
-                                                .withEffort(0x11, 0x12, 0x13, 0x14))));
+                                                .withPositions(1, 2, 3)
+                                                .withVelocities(4, 5, 6, 7)
+                                                .withAccelerations(8, 9, 10)
+                                                .withEffort(11, 12, 13, 14)
+                                                .withTimeFromStart(new Duration(333, 0)),
+                                        new JointTrajectoryPointMessage()
+                                                .withPositions(11, 12, 13)
+                                                .withVelocities(14, 15, 16, 17)
+                                                .withAccelerations(18, 19, 10)
+                                                .withEffort(1, 2, 3, 4)
+                                                .withTimeFromStart(new Duration(0, 54)))));
     }
 }
