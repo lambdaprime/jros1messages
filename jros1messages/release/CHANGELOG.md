@@ -1,3 +1,16 @@
+# Version 4
+
+- Adding tests for bool[]
+- Issue lambdaprime/jros2client#11 Adding tests for complex arrays
+- Adding more tests
+- Integrating jrosmessages.tests
+- Issue lambdaprime/jros2client#11 Updating jrosmessages
+- Fixing md5 and adding missing "fields" parameters for some of the messages
+- Updating gradle files
+- Renaming MessageSerializationUtils
+
+[jros1messages-v4.0.zip](https://github.com/lambdaprime/jros1messages/raw/main/jros1messages/release/jros1messages-v4.0.zip)
+
 # Version 3
 
 - Adding Android build
